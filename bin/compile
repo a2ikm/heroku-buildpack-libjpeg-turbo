@@ -20,7 +20,7 @@ curl -L --silent $DOWNLOAD_URL | tar -xz
 cd "libjpeg-turbo-${VERSION}"
 
 echo "Building" | indent
-autoconf -fiv
+autoreconf -fiv
 sh ./configure --prefix=$INSTALL_DIR
 make
 make install
