@@ -19,12 +19,9 @@ echo "Downloading" | indent
 curl -L --silent $DOWNLOAD_URL | tar -xz
 cd "libjpeg-turbo-${VERSION}"
 
-echo "Configuring" | indent
-./configure --prefix=$INSTALL_DIR
-
 echo "Building" | indent
 make
-make install
+make install prefix=$INSTALL_DIR
 
 echo "Setting environment variables" | indent
 mkdir -p $(dirname $PROFILE_PATH)
