@@ -1,0 +1,37 @@
+#!/bin/sh
+
+VERSION="1.4.2"
+TMP_DIR="$HOME/tmp/libjpeg-turbo"
+INSTALL_DIR="$HOME/vendor/libjpeg-turbo"
+DOWNLOAD_URL="https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${VERSION}.tar.gz"
+PROFILE_PATH="$HOME/.profile.d/libjpeg-turbo.sh"
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+echo "-----> Installing libjpeg-turbo $VERSION"
+
+mkdir -p $TMP_DIR
+cd $TMP_DIR
+
+echo "Downloading" | indent
+curl -L --silent $DOWNLOAD_URL | tar -xz
+cd "libjpeg-turbo-${VERSION}"
+
+echo "Configuring" | indent
+./configure --prefix=$INSTALL_DIR
+
+echo "Building" | indent
+make
+make install
+
+echo "Setting environment variables" | indent
+mkdir -p $(dirname $PROFILE_PATH)
+echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$INSTALL_DIR/lib" >> $PROFILE_PATH
+
+echo "Cleaning" | indent
+cd $HOME
+rm -rf $TMP_DIR
+
+exit 0
